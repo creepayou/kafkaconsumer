@@ -1,0 +1,37 @@
+
+server:
+  port: 48089
+  servlet:
+    context-path: /kafkaconsumer
+  shutdown: graceful
+
+spring:
+  threads:
+    virtual:
+      enabled: true
+  application:
+    name: kafkaconsumer
+  docker:
+    compose:
+      enabled: false
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+    consumer:
+      group-id: default-task-Group
+      key-deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        "[spring.json.trusted.packages]": "*"
+        # spring:
+        #   json:
+        #     type:
+        #       mapping: visitDto:com.example.kafkaconsumer.visitconsumer.VisitDto
+
+# management:
+#   zipkin:
+#     tracing:
+#       endpoint: ${ZIPKIN_ENDPOINT}
+#   tracing:
+#     enabled: true
+#     sampling:
+#       probability: 1
