@@ -1,6 +1,5 @@
 package com.example.kafkaconsumer.visitconsumer;
 
-import org.apache.commons.lang3.SerializationException;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.DltHandler;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -14,9 +13,6 @@ import org.springframework.stereotype.Component;
 
 import com.example.kafkaconsumer.util.JsonUtil;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -39,11 +35,8 @@ public class VisitEventsConsumer {
 	@KafkaListener(topics = { "encounter-post"})
 	public void onMessage(ConsumerRecord<Integer, String> consumerRecord) throws Exception
 	{
-		//ClassCastException
-		// Object x = Integer.valueOf(0);
-		// System.out.println((String)x);
-
 		VisitDto visit = JsonUtil.fromJson(consumerRecord.value(), VisitDto.class);
+		if(visit.getVisitId().equals(124l)) throw new Exception("Testing With Retries.");
 		log.info("VisitDto: " + visit);
 		log.info("Consumer Record: {}", consumerRecord);
 	}
